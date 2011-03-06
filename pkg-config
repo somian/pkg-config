@@ -523,9 +523,7 @@ sub compare
 {
 	my ($a, $b) = @_;
 
-	if ($a eq $b) {
-		return 0;
-	}
+	return 0 if ($a eq $b);
 
 	my @a = split /\./, $a;
 	my @b = split /\./, $b;
@@ -557,8 +555,7 @@ sub versionmatch
 	my $value = compare($inst, $want);
 	if ($op eq '>=') {
 		return $value >= 0;
-	}
-	elsif ($op eq '=') {
+	} elsif ($op eq '=') {
 		return $value == 0;
 	} elsif ($op eq '!=') {
 		return $value != 0;
