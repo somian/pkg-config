@@ -373,7 +373,8 @@ sub do_variable
 	$rc = 1;
 }
 
-#if the modversion option is set, pull out the compiler flags
+#if the modversion or print-provides options are set,
+#pull out the compiler flags
 sub do_modversion
 {
 	my ($p) = @_;
