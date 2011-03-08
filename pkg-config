@@ -123,9 +123,9 @@ my $rc = 0;
 
 # XXX pkg-config is a bit weird
 {
-my $p = join(' ', @ARGV);
-$p =~ s/^\s+//;
-@ARGV = split /\s+/, $p;
+	my $p = join(' ', @ARGV);
+	$p =~ s/^\s+//;
+	@ARGV = split /\s+/, $p;
 }
 
 if ($mode{myminvers}) {
