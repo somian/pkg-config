@@ -105,6 +105,9 @@ GetOptions(	'debug' => \$D,
 		'modversion' => \$mode{modversion},
 		'variable=s' => \$mode{variable},
 		'define-variable=s' => $variables,
+		'print-provides' => sub { return 0; },
+		'print-requires' => sub { return 0; },
+		'print-requires-private' => sub { return 0; },
 	);
 
 # Initial value of printerr depends on the options...
