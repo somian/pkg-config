@@ -171,6 +171,12 @@ if ($mode{modversion} || $mode{printprovides}) {
 	}
 }
 
+if ($mode{printrequires} || $mode{printrequiresprivate}) {
+	for my $pkg (@$top_config) {
+		print_requires($pkg);
+	}
+}
+
 if ($mode{minversion}) {
 	my $v = $mode{minversion};
 	for my $pkg (@$top_config) {
@@ -684,4 +690,32 @@ sub simplify_and_reverse
 		}
 	}
 	return $result;
+}
+
+# retrieve and print Requires(.private)
+sub print_requires
+{
+	my ($p) = @_;
+
+	my $cfg = cache_find_config($p);
+
+	if (defined($cfg)) {
+		my $value;
+
+		if (defined($mode{printrequires})) {
+			$value = $cfg->get_property('Requires', $variables);
+		} elsif (defined($mode{printrequiresprivate})) {
+			$value = $cfg->get_property('Requires.private', $variables);
+		} else {
+			print STDERR "Unknown mode for print_requires.\n" if $D;
+			return 1;
+		}
+
+		if (defined($value)) {
+			print "$_\n" foreach (@$value);
+			return undef;
+		}
+	}
+
+	$rc = 1;
 }
