@@ -88,6 +88,9 @@ GetOptions(	'debug' => \$D,
 		'silence-errors' => sub { $mode{printerr} = 0},
 		'short-errors' => sub { $mode{printerr} = 0},
 		'atleast-pkgconfig-version=s' => \$mode{myminvers},
+		'print-provides' => \$mode{printprovides},
+		'print-requires' => \$mode{printrequires},
+		'print-requires-private' => \$mode{printrequiresprivate},
 
 		'cflags' => sub { $mode{cflags} = 3},
 		'cflags-only-I' => sub { $mode{cflags} |= 1},
@@ -105,9 +108,6 @@ GetOptions(	'debug' => \$D,
 		'modversion' => \$mode{modversion},
 		'variable=s' => \$mode{variable},
 		'define-variable=s' => $variables,
-		'print-provides' => sub { return 0; },
-		'print-requires' => sub { return 0; },
-		'print-requires-private' => sub { return 0; },
 	);
 
 # Initial value of printerr depends on the options...
@@ -165,7 +165,7 @@ if ($mode{uninstalled}) {
 	exit $rc;
 }
 
-if ($mode{modversion}) {
+if ($mode{modversion} || $mode{printprovides}) {
 	for my $pkg (@$top_config) {
 		do_modversion($pkg);
 	}
@@ -383,8 +383,13 @@ sub do_modversion
 	if (defined $cfg) {
 		my $value = $cfg->get_property('Version', $variables);
 		if (defined $value) {
-			print stringize($value), "\n";
-			return undef;
+			if (!defined($mode{printprovides})){
+				print stringize($value), "\n";
+				return undef;
+			} else {
+				print "$p = " . stringize($value) . "\n";
+				return undef;
+			}
 		}
 	}
 	$rc = 1;
