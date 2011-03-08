@@ -654,19 +654,12 @@ sub versionmatch
 
 	print "comparing $want (wanted) to $inst (installed)\n" if $D;
 	my $value = compare($inst, $want);
-	if ($op eq '>=') {
-		return $value >= 0;
-	} elsif ($op eq '=') {
-		return $value == 0;
-	} elsif ($op eq '!=') {
-		return $value != 0;
-	} elsif ($op eq '<') {
-		return $value < 0;
-	} elsif ($op eq '>') {
-		return $value > 0;
-	} elsif ($op eq '<=') {
-		return $value <= 0;
-	}
+	if    ($op eq '>=')	{ return $value >= 0; }
+	elsif ($op eq '=')	{ return $value == 0; }
+	elsif ($op eq '!=')	{ return $value != 0; }
+	elsif ($op eq '<')	{ return $value < 0;  }
+	elsif ($op eq '>')	{ return $value > 0;  }
+	elsif ($op eq '<=')	{ return $value <= 0; }
 }
 
 sub mismatch
