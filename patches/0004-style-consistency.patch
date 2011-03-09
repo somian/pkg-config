@@ -1,0 +1,37 @@
+From 0e0969254b2dc7e44039582ae4cf5b33581b94c7 Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Sun, 6 Mar 2011 20:56:27 +0100
+Subject: [PATCH 04/14] - style consistency
+
+---
+ pkg-config |    7 ++-----
+ 1 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/pkg-config b/pkg-config
+index b8943df..ad2bc7c 100644
+--- a/pkg-config
++++ b/pkg-config
+@@ -523,9 +523,7 @@ sub compare
+ {
+ 	my ($a, $b) = @_;
+ 
+-	if ($a eq $b) {
+-		return 0;
+-	}
++	return 0 if ($a eq $b);
+ 
+ 	my @a = split /\./, $a;
+ 	my @b = split /\./, $b;
+@@ -557,8 +555,7 @@ sub versionmatch
+ 	my $value = compare($inst, $want);
+ 	if ($op eq '>=') {
+ 		return $value >= 0;
+-	}
+-	elsif ($op eq '=') {
++	} elsif ($op eq '=') {
+ 		return $value == 0;
+ 	} elsif ($op eq '!=') {
+ 		return $value != 0;
+-- 
+1.7.3.5
+

@@ -1,0 +1,33 @@
+From c068797267ecf55392314efb72768a298d70656c Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Mon, 7 Mar 2011 18:52:03 +0100
+Subject: [PATCH 09/14] - more manpage tweaks by jmc@
+
+---
+ pkg-config.1 |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/pkg-config.1 b/pkg-config.1
+index d670c41..8bd5311 100644
+--- a/pkg-config.1
++++ b/pkg-config.1
+@@ -149,9 +149,14 @@ This can be used to specify a colon-separated list of paths to search for
+ package files.
+ If given, this list of paths is prepended to the standard search path.
+ .It Ev PKG_CONFIG_SYSROOT_DIR
+-This modifies -I and -L to use the target sysroot directory.
++This modifies
++.Fl I
++and
++.Fl L
++to use the target sysroot directory.
+ Thus -I/usr/local/include will become -I/target/usr/local/include when
+-PKG_CONFIG_SYSROOT_DIR is set to /target, which is useful when crosscompiling
++.Ev PKG_CONFIG_SYSROOT_DIR
++is set to /target, which is useful when crosscompiling
+ packages that use
+ .Nm .
+ .It Ev PKG_CONFIG_TOP_BUILD_DIR
+-- 
+1.7.3.5
+

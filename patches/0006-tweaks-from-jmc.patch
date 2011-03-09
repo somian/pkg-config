@@ -1,0 +1,61 @@
+From fd8c1d769e931fef7ddf0e0d60d3bcc6fee76d03 Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Sun, 6 Mar 2011 22:20:07 +0100
+Subject: [PATCH 06/14] - tweaks from jmc.
+
+---
+ pkg-config.1 |   14 ++------------
+ 1 files changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/pkg-config.1 b/pkg-config.1
+index 71c6b03..c69f2fc 100644
+--- a/pkg-config.1
++++ b/pkg-config.1
+@@ -122,42 +122,32 @@ Print version of
+ and exit.
+ .El
+ .Sh ENVIRONMENT
+-.Bl -tag -width PKG_CONFIG_DEBUG_SPEW
++.Bl -tag -width Ds
+ .It Ev PKG_CONFIG_DEBUG_SPEW
+ If set, this will cause
+ .Nm
+ to print various debugging information.
+-.El
+-.Bl -tag -width PKG_CONFIG_DISABLE_UNINSTALLED
+ .It Ev PKG_CONFIG_DISABLE_UNINSTALLED
+ By default
+ .Nm
+ prefers a package named "foo-uninstalled" over "foo" when the package
+ "foo" is requested.
+-This allows to link/compile against uninstalled packages.
++This allows linking/compiling against uninstalled packages.
+ Setting this flag disables the default behaviour.
+-.El
+-.Bl -tag -width PKG_CONFIG_LIBDIR
+ .It Ev PKG_CONFIG_LIBDIR
+ This can be used to specify a colon-separated list of paths to search for
+ package files.
+ This will replace the default
+ .Nm
+ search directory.
+-.El
+-.Bl -tag -width PKG_CONFIG_LOGFILE
+ .It Ev PKG_CONFIG_LOGFILE
+ This is used to specify a logfile to which
+ .Nm
+ will write the passed arguments.
+-.El
+-.Bl -tag -width PKG_CONFIG_PATH
+ .It Ev PKG_CONFIG_PATH
+ This can be used to specify a colon-separated list of paths to search for
+ package files.
+ If given, this list of paths is prepended to the standard search path.
+-.El
+-.Bl -tag -width PKG_CONFIG_TOP_BUILD_DIR
+ .It Ev PKG_CONFIG_TOP_BUILD_DIR
+ If set
+ .Nm
+-- 
+1.7.3.5
+

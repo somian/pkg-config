@@ -1,0 +1,36 @@
+From 643599660c1bb6d4014a34600a75073f24f3d417 Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Sun, 6 Mar 2011 23:02:13 +0100
+Subject: [PATCH 07/14] - use a slightly better regex in handle_config().
+
+---
+ pkg-config |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/pkg-config b/pkg-config
+index d73cc20..26d63f8 100644
+--- a/pkg-config
++++ b/pkg-config
+@@ -242,9 +242,7 @@ sub handle_config
+ 		my $deps = $cfg->get_property('Requires', $variables);
+ 		if (defined $deps) {
+ 			for my $dep (@$deps) {
+-				# XXX: instead of ([\w\.]+) use something like this?
+-				# (([\d\.]+|[\d\.]+[\w]*[\d]+))
+-				if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\w\.]+)$/) {
++				if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\d\.]+|[\d\.]+[\w]*[\d]+)$/) {
+ 					handle_config($1, $2, $3, $list);
+ 				} else {
+ 					handle_config($dep, undef, undef, $list);
+@@ -257,7 +255,7 @@ sub handle_config
+ 		$deps = $cfg->get_property('Requires.private', $variables);
+ 		if (defined $deps) {
+ 			for my $dep (@$deps) {
+-				if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\w\.]+)$/) {
++				if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\d\.]+|[\d\.]+[\w]*[\d]+)$/) {
+ 					handle_config($1, $2, $3, $list);
+ 				} else {
+ 					handle_config($dep, undef, undef, $list);
+-- 
+1.7.3.5
+
