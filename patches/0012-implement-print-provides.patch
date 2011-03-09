@@ -1,0 +1,61 @@
+From 0455d9bf5b4689b7cf263beac3625ff6787f1423 Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Tue, 8 Mar 2011 11:32:47 +0100
+Subject: [PATCH 12/14] - implement --print-provides
+
+---
+ pkg-config |   17 +++++++++++------
+ 1 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/pkg-config b/pkg-config
+index be64b00..b0a827f 100644
+--- a/pkg-config
++++ b/pkg-config
+@@ -88,6 +88,9 @@ GetOptions(	'debug' => \$D,
+ 		'silence-errors' => sub { $mode{printerr} = 0},
+ 		'short-errors' => sub { $mode{printerr} = 0},
+ 		'atleast-pkgconfig-version=s' => \$mode{myminvers},
++		'print-provides' => \$mode{printprovides},
++		'print-requires' => \$mode{printrequires},
++		'print-requires-private' => \$mode{printrequiresprivate},
+ 
+ 		'cflags' => sub { $mode{cflags} = 3},
+ 		'cflags-only-I' => sub { $mode{cflags} |= 1},
+@@ -105,9 +108,6 @@ GetOptions(	'debug' => \$D,
+ 		'modversion' => \$mode{modversion},
+ 		'variable=s' => \$mode{variable},
+ 		'define-variable=s' => $variables,
+-		'print-provides' => sub { return 0; },
+-		'print-requires' => sub { return 0; },
+-		'print-requires-private' => sub { return 0; },
+ 	);
+ 
+ # Initial value of printerr depends on the options...
+@@ -165,7 +165,7 @@ if ($mode{uninstalled}) {
+ 	exit $rc;
+ }
+ 
+-if ($mode{modversion}) {
++if ($mode{modversion} || $mode{printprovides}) {
+ 	for my $pkg (@$top_config) {
+ 		do_modversion($pkg);
+ 	}
+@@ -383,8 +383,13 @@ sub do_modversion
+ 	if (defined $cfg) {
+ 		my $value = $cfg->get_property('Version', $variables);
+ 		if (defined $value) {
+-			print stringize($value), "\n";
+-			return undef;
++			if (!defined($mode{printprovides})){
++				print stringize($value), "\n";
++				return undef;
++			} else {
++				print "$p = " . stringize($value) . "\n";
++				return undef;
++			}
+ 		}
+ 	}
+ 	$rc = 1;
+-- 
+1.7.3.5
+

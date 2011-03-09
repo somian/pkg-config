@@ -1,0 +1,28 @@
+From cbe59d4c0706210ac12113323673d2beae0cb29f Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Tue, 8 Mar 2011 11:09:36 +0100
+Subject: [PATCH 11/14] - add manpage bits for new options
+
+---
+ pkg-config.1 |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/pkg-config.1 b/pkg-config.1
+index 41db8e5..58614ae 100644
+--- a/pkg-config.1
++++ b/pkg-config.1
+@@ -107,8 +107,11 @@ returns its own version.
+ Print error messages and exit with an error when errors occur.
+ This is the default operation.
+ .It Cm --print-provides
++Print all the modules the given package provides.
+ .It Cm --print-requires
++Print all the modules the given package requires.
+ .It Cm --print-requires-private
++Print all the modules the given package requires for static linking.
+ .It Cm --silence-errors
+ Do not print error messages, just exit with an error.
+ .It Cm --static
+-- 
+1.7.3.5
+

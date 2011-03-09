@@ -1,0 +1,61 @@
+From 3c277fe98493a63512440f5c82543e9a4f627458 Mon Sep 17 00:00:00 2001
+From: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+Date: Tue, 8 Mar 2011 19:52:06 +0100
+Subject: [PATCH 14/14] - implement --print-requires and --print-requires-private
+
+---
+ pkg-config |   34 ++++++++++++++++++++++++++++++++++
+ 1 files changed, 34 insertions(+), 0 deletions(-)
+
+diff --git a/pkg-config b/pkg-config
+index 8477655..a04dd31 100644
+--- a/pkg-config
++++ b/pkg-config
+@@ -171,6 +171,12 @@ if ($mode{modversion} || $mode{printprovides}) {
+ 	}
+ }
+ 
++if ($mode{printrequires} || $mode{printrequiresprivate}) {
++	for my $pkg (@$top_config) {
++		print_requires($pkg);
++	}
++}
++
+ if ($mode{minversion}) {
+ 	my $v = $mode{minversion};
+ 	for my $pkg (@$top_config) {
+@@ -685,3 +691,31 @@ sub simplify_and_reverse
+ 	}
+ 	return $result;
+ }
++
++# retrieve and print Requires(.private)
++sub print_requires
++{
++	my ($p) = @_;
++
++	my $cfg = cache_find_config($p);
++
++	if (defined($cfg)) {
++		my $value;
++
++		if (defined($mode{printrequires})) {
++			$value = $cfg->get_property('Requires', $variables);
++		} elsif (defined($mode{printrequiresprivate})) {
++			$value = $cfg->get_property('Requires.private', $variables);
++		} else {
++			print STDERR "Unknown mode for print_requires.\n" if $D;
++			return 1;
++		}
++
++		if (defined($value)) {
++			print "$_\n" foreach (@$value);
++			return undef;
++		}
++	}
++
++	$rc = 1;
++}
+-- 
+1.7.3.5
+
