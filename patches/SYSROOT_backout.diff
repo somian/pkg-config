@@ -1,0 +1,82 @@
+diff --git a/pkg-config b/pkg-config
+index a04dd31..c76f4bc 100644
+--- a/pkg-config
++++ b/pkg-config
+@@ -39,7 +39,7 @@ my $allow_uninstalled =
+ 	defined $ENV{PKG_CONFIG_DISABLE_UNINSTALLED} ? 0 : 1;
+ my $found_uninstalled = 0;
+ 
+-my $version = 0.23; # pretend to be this version of pkgconfig
++my $version = 0.22; # pretend to be this version of pkgconfig
+ 
+ my %configs = ();
+ my %mode = ();
+@@ -53,12 +53,6 @@ my $D = 0; # debug flag
+     } else {
+ 	    $variables->{pc_top_builddir} = '$(top_builddir)';
+     }
+-
+-    my $s = $ENV{PKG_CONFIG_SYSROOT_DIR};
+-    if (defined $s) {
+-	    $variables->{pc_sysrootdir} = $s;
+-    }
+-    # The default '/' is implied.
+ }
+ 
+ $D = 1 if defined($ENV{PKG_CONFIG_DEBUG_SPEW});
+@@ -413,7 +407,7 @@ sub do_cflags
+ 		my $l = $configs{$pkg}->get_property('Cflags', $variables);
+ 		push(@$cflags, @$l) if defined $l;
+ 	}
+-	my $a = OpenBSD::PkgConfig->compress($cflags,
++	return OpenBSD::PkgConfig->compress($cflags,
+ 		sub {
+ 			local $_ = shift;
+ 			if (($mode{cflags} & 1) && /^-I/ ||
+@@ -424,12 +418,7 @@ sub do_cflags
+ 			}
+ 		});
+ 
+-	if (defined($a) && defined($variables->{pc_sysrootdir})){
+-		$a =~ s/^-I/$&$variables->{pc_sysrootdir}/g;
+-		return $a;
+-	} else {
+-		return undef;
+-	}
++	return undef;
+ }
+ 
+ #if the lib option is set, pull out the linker flags
+@@ -454,10 +443,6 @@ sub do_libs
+ 			}
+ 		});
+ 
+-	if (defined($variables->{pc_sysrootdir})){
+-		$a =~ s/^-[lL]/$&$variables->{pc_sysrootdir}/g;
+-	}
+-
+ 	if ($mode{libs} & 1) {
+ 		my $b = OpenBSD::PkgConfig->rcompress($libs,
+ 			sub { shift =~ m/^-l/; });
+diff --git a/pkg-config.1 b/pkg-config.1
+index 58614ae..dfdcffe 100644
+--- a/pkg-config.1
++++ b/pkg-config.1
+@@ -154,17 +154,6 @@ will write the passed arguments.
+ This can be used to specify a colon-separated list of paths to search for
+ package files.
+ If given, this list of paths is prepended to the standard search path.
+-.It Ev PKG_CONFIG_SYSROOT_DIR
+-This modifies
+-.Fl I
+-and
+-.Fl L
+-to use the target sysroot directory.
+-Thus -I/usr/local/include will become -I/target/usr/local/include when
+-.Ev PKG_CONFIG_SYSROOT_DIR
+-is set to /target, which is useful when crosscompiling
+-packages that use
+-.Nm .
+ .It Ev PKG_CONFIG_TOP_BUILD_DIR
+ If set
+ .Nm
