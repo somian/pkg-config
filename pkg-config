@@ -342,6 +342,7 @@ sub setup_self
 {
 	my $pkg_pc = OpenBSD::PkgConfig->new;
 	$pkg_pc->add_property('Version', $version);
+	$pkg_pc->add_variable('pc_path', join(":", @PKGPATH));
 	$configs{'pkg-config'} = $pkg_pc;
 }
 
