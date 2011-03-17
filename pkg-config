@@ -325,7 +325,8 @@ sub validate_config
 	foreach (@required_elems) {
 		$e = $cfg->get_property($_, $variables);
 		if (!defined $e) {
-			print STDERR "incomplete or corrupt file: $f\n" if $D;
+			$f =~ s/(^.*\/)(.*?)\.pc$/$2/g;
+			print STDERR "Package '$f' has no $_: field\n";
 			return undef;
 		}
 	}
