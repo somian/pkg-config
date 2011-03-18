@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $OpenBSD: pkg-config,v 1.34 2011/03/14 08:43:59 jasper Exp $
+# $OpenBSD: pkg-config,v 1.39 2011/03/18 15:20:22 jasper Exp $
 
 #$CSK: pkgconfig.pl,v 1.39 2006/11/27 16:26:20 ckuethe Exp $
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
@@ -121,7 +121,7 @@ my $rc = 0;
 {
 my $p = join(' ', @ARGV);
 $p =~ s/^\s+//;
-@ARGV = split /\s+/, $p;
+@ARGV = split /\,?\s+/, $p;
 }
 
 if ($mode{myminvers}) {
@@ -144,7 +144,6 @@ while (@ARGV){
 	    	$op = shift @ARGV;
 		$v = shift @ARGV;
 	}
-	$p =~ s/,//g;
 	handle_config($p, $op, $v, $cfg_full_list);
 	push(@$top_config, $p);
 }
