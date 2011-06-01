@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $OpenBSD: pkg-config,v 1.41 2011/03/18 18:21:40 jasper Exp $
+# $OpenBSD: pkg-config,v 1.44 2011/05/25 12:16:34 jasper Exp $
 # $CSK: pkgconfig.pl,v 1.39 2006/11/27 16:26:20 ckuethe Exp $
 
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
@@ -21,6 +21,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use File::Basename;
+use Memoize;
 use OpenBSD::PkgConfig;
 
 my @PKGPATH = qw(/usr/lib/pkgconfig /usr/local/lib/pkgconfig /usr/X11R6/lib/pkgconfig);
@@ -104,6 +105,12 @@ GetOptions(	'debug' => \$D,
 		'define-variable=s' => $variables,
 	);
 
+# handle_config() is not a slow routine per se, but we spend
+# a lot of time in it, so cache the return values. The most gain
+# is from configure scripts/build commands which query several modules
+# at the same time.
+memoize('handle_config');
+
 # Initial value of printerr depends on the options...
 if (!defined $mode{printerr}) {
 	if (defined $mode{libs} || defined $mode{cflags}
@@ -141,7 +148,7 @@ while (@ARGV){
 	my $op = undef;
 	my $v = undef;
 	if (@ARGV >= 2  && $ARGV[0] =~ /^[<=>]+$/ &&
-	    $ARGV[1] =~ /^[\d\.]+$/) {
+	    $ARGV[1] =~ /^[\d\.]+\w?$/) {
 	    	$op = shift @ARGV;
 		$v = shift @ARGV;
 	}
@@ -234,31 +241,26 @@ sub handle_config
 		}
 	}
 
-	my $deps = $cfg->get_property('Requires', $variables);
-	if (defined $deps) {
-		for my $dep (@$deps) {
-			if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\d\.]+)$/) {
-				handle_config($1, $2, $3, $list);
-			} else {
-				handle_config($dep, undef, undef, $list);
-			}
-		}
-		print STDERR "package $p requires ",
-		    join(',', @$deps), "\n" if $D;
-	}
+	my $get_props = sub {
+		my $property = shift;
 
-	$deps = $cfg->get_property('Requires.private', $variables);
-	if (defined $deps) {
-		for my $dep (@$deps) {
-			if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\d\.]+)$/) {
-				handle_config($1, $2, $3, $list);
-			} else {
-				handle_config($dep, undef, undef, $list);
+		my $deps = $cfg->get_property($property, $variables);
+		if (defined $deps) {
+			for my $dep (@$deps) {
+				if ($dep =~ m/^(.*?)\s*([<=>]+)\s*([\d\.]+)$/) {
+					handle_config($1, $2, $3, $list);
+				} else {
+					handle_config($dep, undef, undef, $list);
+				}
 			}
+			print STDERR "package $p ", lc($property), " ",
+			    join(',', @$deps), "\n" if $D;
 		}
-		print STDERR "package $p requires (private)",
-		    join(',', @$deps), "\n" if $D;
-	}
+	};
+
+	&$get_props("Requires");
+	&$get_props("Requires.private");
+
 }
 
 # look for the .pc file in each of the PKGPATH elements. Return the path or
