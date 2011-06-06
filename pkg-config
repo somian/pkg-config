@@ -566,16 +566,16 @@ sub compare
 	return 0 if ($a eq $b);
 
 	# is there a valid non-numeric suffix to deal with later?
-	# only a(lpha) and b(eta) are allowed for now (do pre and rc later).
+	# accepter are (in order): a(lpha) < b(eta) < rc < ' '.
 	# suffix[0] is the 'alpha' part, suffix[1] is the '1' part in 'alpha1'.
-	if ($a =~ m/(beta|b|alpha|a)([\d]+)$/) {
+	if ($a =~ m/(rc|beta|b|alpha|a)([\d]+)$/) {
 		print STDERR "valid suffix $1$2 found in $a.\n" if $D;
 		$suffix_a[0] = $1;
 		$suffix_a[1] = $2;
 		$a =~ s/$suffix_a[0]$suffix_a[1]//g;
 	}
 
-	if ($b =~ m/(beta|b|alpha|a)([\d]+)$/) {
+	if ($b =~ m/(rc|beta|b|alpha|a)([\d]+)$/) {
 		print STDERR "valid suffix $1$2 found in $b.\n" if $D;
 		$suffix_b[0] = $1;
 		$suffix_b[1] = $2;
