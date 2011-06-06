@@ -145,7 +145,11 @@ while (@ARGV){
 	    	$op = shift @ARGV;
 		$v = shift @ARGV;
 	}
-	handle_config($p, $op, $v, $cfg_full_list);
+	# For these modes we just need some meta-information and
+	# parsing the requirement is not needed.
+	if (!($mode{modversion} || $mode{printprovides})) {
+		handle_config($p, $op, $v, $cfg_full_list);
+	}
 	push(@$top_config, $p);
 }
 
