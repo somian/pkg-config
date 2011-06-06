@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $OpenBSD: pkg-config,v 1.46 2011/06/06 07:57:07 jasper Exp $
+# $OpenBSD: pkg-config,v 1.48 2011/06/06 11:18:55 jasper Exp $
 # $CSK: pkgconfig.pl,v 1.39 2006/11/27 16:26:20 ckuethe Exp $
 
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
@@ -648,8 +648,6 @@ sub compare
 }
 
 # simple numeric comparison, with optional equality test.
-# if no explicit return is needed by the caller, be sure to check
-# for undef (see 
 sub compare_numeric
 {
 	my ($x, $y, $eq) = @_;
