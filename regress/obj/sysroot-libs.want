@@ -1,0 +1,1 @@
+-L/altroot/tmp/lib -L/altroot/tmp/lib/foo -lc
