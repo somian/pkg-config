@@ -131,6 +131,41 @@ sysroot-libs:
 define-variable:
 	# Test --define-variable
 
+missing-req-1:
+	# Test for missing packages in Requires
+	@echo "Package nonexisting was not found in the pkg-config search path" > ${WANT}
+	@if PKG_CONFIG_PATH=${.CURDIR}/pcdir/ pkg-config --libs \
+		missing-req 2> ${GOT}; then false; fi
+	@diff -u ${WANT} ${GOT}
+
+# This currently fails, because eventhough we only request the version
+# '1' is still being set as return value 
+missing-req-2:
+	@echo "0.0.0" > ${WANT}
+	@PKG_CONFIG_PATH=${.CURDIR}/pcdir/ pkg-config --modversion \
+		missing-req > ${GOT}
+	@diff -u ${WANT} ${GOT}
+
+missing-req-priv:
+	# Test for missing packages in Requires.private
+	@echo "Package nonexisting2 was not found in the pkg-config search path" > ${WANT}
+	PKG_CONFIG_PATH=${.CURDIR}/pcdir/ pkg-config --libs missing-req 2> ${GOT}
+	@diff -u ${WANT} ${GOT}
+
+whitespace-cflags:
+	# Test whitespace on various positions in Cflags
+	@echo "-I/tmp/include -I/tmp/include/include\ dir" > ${WANT}
+	@PKG_CONFIG_PATH=${.CURDIR}/pcdir/ pkg-config --cflags \
+		whitespace > ${GOT}
+	@diff -u ${WANT} ${GOT}
+
+whitespace-libs:
+	# Test whitespace on various positions in Libs
+	@echo "-L/tmp/lib -L/tmp/lib/foo -lbaz\ quux" > ${WANT}
+	@PKG_CONFIG_PATH=${.CURDIR}/pcdir/ pkg-config --libs \
+		whitespace > ${GOT}
+	@diff -u ${WANT} ${GOT}
+
 clean:
 	rm -f *.want *.got
 
