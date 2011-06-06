@@ -588,8 +588,7 @@ sub compare
 	while (@a && @b) { #so long as both lists have something
 		if (!(@suffix_a || @suffix_b)) {
 			# simple comparison when no suffixes are in the game.
-			return 1 if $a[0] > $b[0];
-			return -1 if $a[0] < $b[0];
+			return compare_numeric($a[0], $b[0], 0);
 		} else {
 			# extended comparison.
 			if (((scalar(@a) == 1) || (scalar(@b) == 1)) && 
@@ -607,9 +606,7 @@ sub compare
 					# suffixes are equal, compare on numeric
 					if (&$first_char($suffix_a[0]) eq
 					    &$first_char($suffix_b[0])) {
-						return 0 if ($suffix_a[1] == $suffix_b[1]);
-						return 1 if ($suffix_a[1] > $suffix_b[1]);
-						return -1 if ($suffix_a[1] < $suffix_b[1]);
+					    	return compare_numeric($suffix_a[1], $suffix_b[1], 1);
 					}
 
 					# beta beats alpha
@@ -637,8 +634,7 @@ sub compare
 				}
 				
 			} else {
-				return 1 if $a[0] > $b[0];
-				return -1 if $a[0] < $b[0];
+				return compare_numeric($a[0], $b[0], 0);
 			}
 				
 		}
@@ -647,6 +643,16 @@ sub compare
 	return 1 if @a;
 	return -1 if @b;
 	return 0;
+}
+
+# simple numeric comparison, with optional equality test
+sub compare_numeric
+{
+	my ($x, $y, $eq) = @_;
+
+	return 1 if $x > $y;
+	return -1 if $x < $y;
+	return 0 if (($x == $y) and ($eq == 1))
 }
 
 # got a package meeting the requested specific version?
