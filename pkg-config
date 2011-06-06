@@ -609,7 +609,7 @@ sub compare
 					    	return compare_numeric($suffix_a[1], $suffix_b[1], 1);
 					}
 
-					# beta beats alpha
+					# rc beats beta beats alpha
 					if (&$first_char($suffix_a[0]) lt &$first_char($suffix_b[0])) {
 						print STDERR "$full_a (installed) < $full_b (wanted)\n" if $D;
 						return -1;
