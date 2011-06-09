@@ -574,13 +574,13 @@ sub compare
 	# suffix[0] is the 'alpha' part, suffix[1] is the '1' part in 'alpha1'.
 	# XXX: add back 'rc'.
 	if ($a =~ s/(beta|b|alpha|a)(\d+)$//) {
-		print STDERR "valid suffix $1$2 found in $a.\n" if $D;
+		print STDERR "valid suffix $1$2 found in $a$1$2.\n" if $D;
 		$suffix_a[0] = $1;
 		$suffix_a[1] = $2;
 	}
 
 	if ($b =~ s/(beta|b|alpha|a)(\d+)$//) {
-		print STDERR "valid suffix $1$2 found in $b.\n" if $D;
+		print STDERR "valid suffix $1$2 found in $b$1$2.\n" if $D;
 		$suffix_b[0] = $1;
 		$suffix_b[1] = $2;
 	}
