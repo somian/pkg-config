@@ -55,8 +55,7 @@ $variables->{pc_top_builddir} = $ENV{PKG_CONFIG_TOP_BUILD_DIR} //
 $variables->{pc_sysrootdir} //= $ENV{PKG_CONFIG_SYSROOT_DIR};
 # The default '/' is implied.
 
-my $D;
-defined $ENV{PKG_CONFIG_DEBUG_SPEW} ? $D = 1 : $D = 0;
+defined $ENV{PKG_CONFIG_DEBUG_SPEW} ? $mode{debug} = 1 : $mode{debug} = 0;
 
 if ($logfile) {
 	open my $L, ">>" , $logfile or die;
@@ -73,7 +72,7 @@ if ($logfile) {
 # without having to go back and reload the files from disk.
 
 Getopt::Long::Configure('no_ignore_case');
-GetOptions(	'debug' => \$D,
+GetOptions(	'debug' => \$mode{debug},
 		'help' => \&help, #does not return
 		'usage' => \&help, #does not return
 		'list-all' => \$mode{list},
@@ -750,7 +749,7 @@ sub beautify_list
 sub pr_debug
 {
 	my $str = shift;
-	print STDERR $str . "\n" if $D;
+	print STDERR $str . "\n" if $mode{debug};
 }
 
 sub pr_error {
