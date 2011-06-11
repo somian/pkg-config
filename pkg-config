@@ -48,7 +48,6 @@ setup_self();
 
 my %mode = ();
 my $variables = {};
-my $D = 0; # debug flag
 
 $variables->{pc_top_builddir} = $ENV{PKG_CONFIG_TOP_BUILD_DIR} //
 	'$(top_builddir)';
@@ -56,7 +55,8 @@ $variables->{pc_top_builddir} = $ENV{PKG_CONFIG_TOP_BUILD_DIR} //
 $variables->{pc_sysrootdir} //= $ENV{PKG_CONFIG_SYSROOT_DIR};
 # The default '/' is implied.
 
-$D = 1 if defined $ENV{PKG_CONFIG_DEBUG_SPEW};
+my $D;
+defined $ENV{PKG_CONFIG_DEBUG_SPEW} ? $D = 1 : $D = 0;
 
 if ($logfile) {
 	open my $L, ">>" , $logfile or die;
