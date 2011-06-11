@@ -570,9 +570,8 @@ sub compare
 	return 0 if ($a eq $b);
 
 	# is there a valid non-numeric suffix to deal with later?
-	# accepter are (in order): a(lpha) < b(eta) < rc < ' '.
+	# accepted are (in order): a(lpha) < b(eta) < rc < ' '.
 	# suffix[0] is the 'alpha' part, suffix[1] is the '1' part in 'alpha1'.
-	# XXX: add back 'rc'.
 	if ($a =~ s/(rc|beta|b|alpha|a)(\d+)$//) {
 		print STDERR "valid suffix $1$2 found in $a$1$2.\n" if $D;
 		$suffix_a[0] = $1;
