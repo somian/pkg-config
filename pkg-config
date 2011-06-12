@@ -758,13 +758,14 @@ sub pr_msg
 	my $stream;
 
 	if ($mode{estdout}) {
+		close(STDERR);
 		open(STDERR, ">&STDOUT") or die "Can't dup STDOUT: $!";
 	}
 
 	if ((($type == MSG_DEBUG) && $mode{debug}) ||
 	    (($type == MSG_ERROR) && $mode{printerr}) || 
 	     ($type == MSG_WARNING)) {
-		print $str . "\n";
+		print STDERR $str . "\n";
 	}
 
 	return undef;
