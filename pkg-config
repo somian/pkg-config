@@ -752,7 +752,8 @@ sub pr_debug
 	print STDERR $str . "\n" if $mode{debug};
 }
 
-sub pr_error {
+sub pr_error
+{
 	my $str = shift;
 	print STDERR $str . "\n" if $mode{printerr};
 }
