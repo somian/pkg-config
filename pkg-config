@@ -213,7 +213,6 @@ my $dep_cfg_list = simplify_and_reverse($cfg_full_list);
 if ($mode{cflags} || $mode{libs} || $mode{variable}) {
 	push @vlist, do_cflags($dep_cfg_list) if $mode{cflags};
 	push @vlist, do_libs($dep_cfg_list) if $mode{libs};
-	#push @vlist, do_libs_priv($dep_cfg_list) if ($mode{static} && $mode{libs});
 	print join(' ', @vlist), "\n" if $rc == 0;
 }
 
@@ -259,7 +258,7 @@ sub handle_config
 
 	if (defined $mode{cflags}
 	    or ($mode{static} && $mode{libs})
-	    or $mode{printreqprivate}) {
+	    or $mode{printrequiresprivate}) {
 		&$get_props("Requires.private");
 	}
 	&$get_props("Requires");
