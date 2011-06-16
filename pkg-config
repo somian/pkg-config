@@ -456,8 +456,10 @@ sub do_libs
 
 	my $libs = [];
 
-	# In static mode, we have to make sure we print the libs in dependency
-	# order, not in search order. Ordering matters for static linking.
+	# In static mode, we have to make sure we discover the libs in dependency
+	# order, not in search order. Ordering matters for static linking:
+	# Start with Libs (first our own, then dependencies), and append
+	# Libs.private (same order as for Libs).
 	foreach my $pkg (@$list) {
 		my $l = $configs{$pkg}->get_property('Libs', $variables);
 		push(@$libs, @$l) if defined $l;
