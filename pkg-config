@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $OpenBSD: pkg-config,v 1.64 2011/06/15 11:54:03 jasper Exp $
+# $OpenBSD: pkg-config,v 1.66 2011/06/16 08:38:30 jasper Exp $
 # $CSK: pkgconfig.pl,v 1.39 2006/11/27 16:26:20 ckuethe Exp $
 
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
@@ -456,12 +456,19 @@ sub do_libs
 
 	my $libs = [];
 
+	# In static mode, we have to make sure we print the libs in dependency
+	# order, not in search order. Ordering matters for static linking.
 	foreach my $pkg (@$list) {
 		my $l = $configs{$pkg}->get_property('Libs', $variables);
 		push(@$libs, @$l) if defined $l;
+		if ($mode{static}) {
+			my $lp = $configs{$pkg}->get_property('Libs.private', $variables);
+			push(@$libs, @$lp) if defined $lp;
+		}
 	}
 
-	# Get the linker path directives (-L).
+	# Get the linker path directives (-L) and store it in $a.
+	# $b will be the actual libraries.
 	my $a = OpenBSD::PkgConfig->compress($libs,
 		sub {
 			local $_ = shift;
@@ -485,10 +492,6 @@ sub do_libs
 		return $a;
 	}
 }
-
-# Retrieve Libs.private, but without re-ordering
-sub do_libs_priv
-{}
 
 #list all packages
 sub do_list
