@@ -197,23 +197,27 @@ and
 .Nm
 is a re-implementation of the "original" freedesktop.org program.
 While it tries to be compatible, there are several
-design/functionality differences one should be aware of.
+design/functionality differences one should be aware of:
 .Bl -tag -width Ds
 .It Ev Conflicts
 It was decided not to support the Conflicts keyword as there is
-currently too little benefit from it in OpenBSD where the ports tree
-is supposed to prevent conflicts from arising in the first place.
+currently too little benefit from it in
+.Ox
+where the ports tree is supposed to prevent conflicts from arising
+in the first place.
 Lines with this keyword are not treated as errors, they are just ignored.
 And they are not taken into account when
 .Cm --print-errors
 is passed.
-.It Ev Cflags and -i
+.It Ev Cflags and Fl i
 The -i flag that can be encountered in Cflags is not treated
-differently from -I in this implementation.
+differently from
+.Fl I
+in this implementation.
 .It Ev Whitespace
 .Nm
-does not go to a great length in trying to fix up whitespace abuse.
-Whitespace in Libs and Cflags lines that are escaped using \\ are
-treated correctly. But strings enclosed in quotation marks that
-contain whitespaces are not.
+does not go to great lengths to try to fix up whitespace abuse.
+Whitespace in Libs and Cflags lines that are escaped using \e are
+treated correctly.
+But strings enclosed in quotation marks that contain whitespaces are not.
 .El
