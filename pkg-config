@@ -4,6 +4,7 @@
 
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
 # Copyright (c) 2011 Jasper Lievisse Adriaanse <jasper@openbsd.org>
+# Copyright (c) 2013 Sören Andersen <somian OH-EIGHT @ gmail.com>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -114,7 +115,8 @@ GetOptions(	'debug' 		=> \$mode{debug},
 # and simplify the libs like we do for shared architectures.
 {
 	my @static_archs = qw(m88k vax);
-	my $machine_arch = $Config{'ARCH'};
+	my $machine_arch = $Config{'ARCH'}; # HUH? BSD-ism?
+    $machine_arch ||=  $Config{'archname'};
 	if (grep { $_ eq $machine_arch } @static_archs){
 		$mode{static} = 1;
 	}
