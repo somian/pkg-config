@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 # $OpenBSD: pkg-config,v 1.71 2012/03/19 10:25:17 ajacoutot Exp $
 # $CSK: pkgconfig.pl,v 1.39 2006/11/27 16:26:20 ckuethe Exp $
+# SOMIAN # Last modified: 2013-03-24T09:08:59Z
 
 # Copyright (c) 2006 Chris Kuethe <ckuethe@openbsd.org>
 # Copyright (c) 2011 Jasper Lievisse Adriaanse <jasper@openbsd.org>
@@ -374,7 +375,7 @@ sub setup_self
 	my $pkg_pc = OpenBSD::PkgConfig->new;
 	$pkg_pc->add_property('Version', $version);
 	$pkg_pc->add_variable('pc_path', join(":", @PKGPATH));
-	$pkg_pc->add_property('URL', "http://www.openbsd.org/cgi-bin/man.cgi?query=pkg-config");
+	$pkg_pc->add_property('URL', "https://github.com/somian/pkg-config");
 	$pkg_pc->add_property('Description', "fetch metadata about installed software packages");
 	$configs{'pkg-config'} = $pkg_pc;
 }
